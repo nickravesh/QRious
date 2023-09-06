@@ -13,6 +13,11 @@ import sys
 warnings.filterwarnings("ignore")
 
 
+def checkIfHistoryDirExists():
+    if "history" not in os.listdir():
+        os.mkdir("history")
+
+
 def controller(status):
     if (status == "G") or (status == "g"):
         generate_QRcode()
@@ -29,6 +34,7 @@ def controller(status):
 
 
 def generate_QRcode():
+    checkIfHistoryDirExists()
 
     def deleteLinesContainingSpecificString(fileName, targetString):
         #open the history.log file in read mode, read its content and save it to a list
@@ -72,6 +78,7 @@ def generate_QRcode():
 
 
 def scan_QRcode():
+    checkIfHistoryDirExists()
     imageLocation = input("\nEnter the QR-Code image location to scan: ")
 
     # Redirect standard output and error streams to hide unwanted messages
@@ -89,6 +96,7 @@ def scan_QRcode():
 
 
 def history():
+    checkIfHistoryDirExists()
     print("\n<< History of the last 10 generated QR-Codes >>\n")
 
     with open("./history/history.log") as file:
