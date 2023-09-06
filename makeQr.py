@@ -24,7 +24,7 @@ def controller(status):
         scan_QRcode()
     
     else:
-        print("\nWrong input, please try again!\nuse \'g\' to generate QR-Code and \'h\' to see the history.\n")
+        print("\nWrong input, please try again!\nuse \'g\' to generate QR-Code, 's' to scan and \'h\' to see the history.\n")
         controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
 
 
@@ -88,17 +88,28 @@ def scan_QRcode():
     print(f"\n{str(decodedText)[2:-3]}")
 
 
-
-
 def history():
     print("\n<< History of the last 10 generated QR-Codes >>\n")
 
     with open("./history/history.log") as file:
-        counter = 0
+        counter = -1
         for line in file:
             counter += 1
             print(f"{counter}. [{line.strip().split('||')[1]}] Generated in {(line.strip().split('||')[0]).split('-')[0]}")
 
+    
+    selectedItem = input("\nSelect the number you want to see QR-Code again\nor press Enter to back to the main menue: ")
+    
+    if selectedItem == "":
+        controller(input("\nWhat do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
+    else:
+        try:
+            with open("./history/history.log") as file:
+                requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
+            os.system(f"xdg-open history/{requestedQRcodeFileName}")
+        except:
+            print("\n--Wrong input!, please only enter the number from the range 1 to 10--")
+            history()
 
 
 controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
