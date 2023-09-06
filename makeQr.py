@@ -3,7 +3,29 @@
 import segno # to make qr-codes
 from getpass import getuser # to get the username of the user running the script
 import os # to run system commands
-import datetime
+import datetime # to set a file name for the saved qr-codes in history
+from qreader import QReader
+from cv2 import cvtColor, imread, COLOR_BGR2RGB
+import warnings
+import sys
+
+# Suppress warnings
+warnings.filterwarnings("ignore")
+
+
+def controller(status):
+    if (status == "G") or (status == "g"):
+        generate_QRcode()
+    
+    elif (status == "H") or (status == "h"):
+        history()
+
+    elif (status == "S") or (status == "s"):
+        scan_QRcode()
+    
+    else:
+        print("\nWrong input, please try again!\nuse \'g\' to generate QR-Code and \'h\' to see the history.\n")
+        controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
 
 
 def generate_QRcode():
@@ -19,7 +41,7 @@ def generate_QRcode():
 
 
     # gets the path of the script directory and generates a colorful copy of qr-code inside of history directory
-    qrcode.save(f"{os.path.dirname(__file__)}/history/{datetime.datetime.now().strftime('%Y_%m_%d')}-{datetime.datetime.now().strftime('%H%M%S')}.png", scale=20, dark="yellow", light="#35155D")
+    qrcode.save(f"{os.path.dirname(__file__)}/history/{datetime.datetime.now().strftime('%Y_%m_%d')}-{datetime.datetime.now().strftime('%H%M%S')}.png", scale=20, dark="black", light="white")
 
     # Add /home/[username]/.local/bin to the PATH variable of the current process
     os.environ["PATH"] += os.pathsep + f"/home/{getuser()}/.local/bin"
@@ -27,8 +49,28 @@ def generate_QRcode():
     os.system(f'segno --compact "{userInput}"') # to show the qr-code in the terminal
 
 
+def scan_QRcode():
+    imageLocation = input("\nEnter the QR-Code image location to scan: ")
 
-status = input("What do you want to do?\n(G)enerate QR-Code, See the (H)istory? ")
+    # Redirect standard output and error streams to hide unwanted messages
+    sys.stdout = open ("/dev/null", "w")
+    sys.stderr = open ("/dev/null", "w")
+
+    qrImage = cvtColor(imread(imageLocation), COLOR_BGR2RGB)
+    decodedText = QReader().detect_and_decode(image=qrImage)
+
+    # Restore standard output and error streams
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+
+    print(f"\n{str(decodedText)[2:-3]}")
 
 
-generate_QRcode()
+
+
+def history():
+    print("\n<< History of the last 10 generated QR-Codes >>\n")
+
+
+
+controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
