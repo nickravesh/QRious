@@ -9,7 +9,7 @@ from cv2 import cvtColor, imread, COLOR_BGR2RGB
 import warnings
 import sys
 
-# Suppress warnings
+# Suppress standard warnings
 warnings.filterwarnings("ignore")
 
 
@@ -29,18 +29,35 @@ def controller(status):
 
 
 def generate_QRcode():
+
+    def deleteLinesContainingSpecificString(fileName, targetString):
+        #open the history.log file in read mode, read its content and save it to a list
+        with open(fileName) as file:
+            lines = file.readlines()
+
+        # remove lines containing the target string
+        modifiedLines = [line for line in lines if targetString not in line]
+
+        # write the modified lines back to the file
+        with open(fileName, "w") as file:
+            file.writelines(modifiedLines)
+
+
     userInput = input("\nPlease Enter Your Text, The QR-code Will Be Generated:\n")
     qrcode = segno.make_qr(userInput) # make the qr-code using segno
 
     #removes the oldest qr-code in the history directory if there is more than 10 of them
-    if len(os.listdir(f"{os.path.dirname(__file__)}/history")) >= 10: # get the number of files that exists in the history directory
+    if len(os.listdir(f"{os.path.dirname(__file__)}/history")) > 3: # get the number of files that exists in the history directory
         # get the list of the files in the history directory
         listOfFiles = os.listdir(f"{os.path.dirname(__file__)}/history")
         # This line of code uses the `min()` function with a lambda function as the key to find the oldest file in the `history` directory based on its creation time. The lambda function takes a filename as an argument, joins it with the directory path using `os.path.join()`, and then returns the creation time of the resulting file path using `os.path.getctime()`. The resulting filename is then passed to `os.remove()` to delete the file.
-        os.remove(f"{os.path.dirname(__file__)}/history/{min(listOfFiles, key=lambda x: os.path.getctime(os.path.join(f'{os.path.dirname(__file__)}/history/', x)))}")
+        fileToDeletePath = f"{os.path.dirname(__file__)}/history/{min(listOfFiles, key=lambda x: os.path.getctime(os.path.join(f'{os.path.dirname(__file__)}/history/', x)))}"
+        os.remove(fileToDeletePath)
+
+        deleteLinesContainingSpecificString("./history/history.log", fileToDeletePath.split("/")[-1])
+        print(fileToDeletePath.split("/")[-1])
 
     # gets the path of the script directory and generates a colorful copy of qr-code inside of history directory
-    fileName = ""
     filePathToSave = f"{os.path.dirname(__file__)}/history/{datetime.datetime.now().strftime('%Y_%m_%d')}-{datetime.datetime.now().strftime('%H%M%S')}.png"
     qrcode.save(filePathToSave, scale=20, dark="black", light="white")
 
@@ -49,10 +66,9 @@ def generate_QRcode():
 
     os.system(f'segno --compact "{userInput}"') # to show the qr-code in the terminal
 
-    qrHistory = {}
-
+    # log the value of the generated qr-code and its file name to the history.log file
     with open("./history/history.log", "a") as fileHandel:
-        fileHandel.write(f"{userInput}||{filePathToSave.split('/')[-1]}\n")
+        fileHandel.write(f"{filePathToSave.split('/')[-1]}||{userInput}\n")
 
 
 def scan_QRcode():
