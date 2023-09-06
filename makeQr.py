@@ -47,7 +47,7 @@ def generate_QRcode():
     qrcode = segno.make_qr(userInput) # make the qr-code using segno
 
     #removes the oldest qr-code in the history directory if there is more than 10 of them
-    if len(os.listdir(f"{os.path.dirname(__file__)}/history")) > 3: # get the number of files that exists in the history directory
+    if len(os.listdir(f"{os.path.dirname(__file__)}/history")) > 10: # get the number of files that exists in the history directory
         # get the list of the files in the history directory
         listOfFiles = os.listdir(f"{os.path.dirname(__file__)}/history")
         # This line of code uses the `min()` function with a lambda function as the key to find the oldest file in the `history` directory based on its creation time. The lambda function takes a filename as an argument, joins it with the directory path using `os.path.join()`, and then returns the creation time of the resulting file path using `os.path.getctime()`. The resulting filename is then passed to `os.remove()` to delete the file.
@@ -92,6 +92,12 @@ def scan_QRcode():
 
 def history():
     print("\n<< History of the last 10 generated QR-Codes >>\n")
+
+    with open("./history/history.log") as file:
+        counter = 0
+        for line in file:
+            counter += 1
+            print(f"{counter}. [{line.strip().split('||')[1]}] Generated in {(line.strip().split('||')[0]).split('-')[0]}")
 
 
 
