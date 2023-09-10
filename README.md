@@ -5,7 +5,7 @@ Experience precise and reliable local QR code image generation and scanning with
 
 ### Installing requirements
 ```
-pip install segno qreader opencv-python
+pip install -r requirements.txt
 ```
 ### Usage
 Just run the script and follow the on-screen instructions, nothing complicated.
