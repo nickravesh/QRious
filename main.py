@@ -4,8 +4,8 @@ import segno # to make qr-codes
 from getpass import getuser # to get the username of the user running the script
 import os # to run system commands
 import datetime # to set a file name for the saved qr-codes in history
-from qreader import QReader
-from cv2 import cvtColor, imread, COLOR_BGR2RGB
+from PIL import Image # to open image files
+from pyzbar.pyzbar import decode # to decode and scan qr-codes
 import warnings
 import sys
 
@@ -85,15 +85,15 @@ def scan_QRcode():
     sys.stdout = open ("/dev/null", "w")
     sys.stderr = open ("/dev/null", "w")
 
-    qrImage = cvtColor(imread(imageLocation), COLOR_BGR2RGB)
-    decodedText = QReader().detect_and_decode(image=qrImage)
+    qrImage = Image.open(imageLocation)
 
     # Restore standard output and error streams
     sys.stdout = sys.__stdout__
     sys.stderr = sys.__stderr__
 
-    print(f"\n{str(decodedText)[2:-3]}")
-
+    decoded_list = decode(qrImage)
+    print(f"\n{decoded_list[0].data.decode()}")
+    
 
 def history():
     checkIfHistoryDirExists()
