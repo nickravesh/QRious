@@ -81,7 +81,10 @@ def generate_QRcode():
 def scan_QRcode():
     checkIfHistoryDirExists()
     imageLocation = input(f"\n{Fore.LIGHTCYAN_EX}Enter the QR-Code image location to scan: {Fore.RESET}")
-
+    # check if the given path to the qr-code image is valid
+    if imageLocation == "" or os.path.exists(imageLocation) == False:
+        print(f"{Fore.LIGHTRED_EX}Wrong path to the image!\nplease provide the absolute path to the image you want to scan for QR-Code.{Fore.RESET}")
+        scan_QRcode()
     # Redirect standard output and error streams to hide unwanted messages
     sys.stdout = open ("/dev/null", "w")
     sys.stderr = open ("/dev/null", "w")
@@ -127,6 +130,4 @@ controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-C
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
 # TODO: maintain the installer
-# TODO: add error message in the scan section when user does not enter a valid location of the image to scan
-# TODO: add 'oppening image...' after the user select an image from the history list to be opened. - DONE
-# TODO: ask the user if they want to view another item from the history after they already selected an item to be displayed form the history - DONE
+# TODO: add error message in the scan section when user does not enter a valid location of the image to scan - DONE
