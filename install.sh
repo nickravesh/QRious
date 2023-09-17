@@ -13,7 +13,7 @@ sudo cd /usr/local/bin/QRious
 echo "MOVING... DONE!"
 
 echo "INSTALLING REQUIREMENTS..."
-pip install -r requirements.txt
+pip install -r requirements.txt --no-warn-script-location
 cd ~
 echo "INSTALLING REQUIREMENTS... DONE!"
 
