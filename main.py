@@ -103,25 +103,27 @@ def history():
     checkIfHistoryDirExists()
     print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
 
+    # open the history.log file, read and then display the log of the saved qr-codes in the history directory with their name and the date they have generated
     with open("./history/history.log") as file:
         counter = -1
         for line in file:
             counter += 1
             print(f"{counter}. [{line.strip().split('||')[1]}] {Fore.LIGHTBLUE_EX}Generated in{Fore.RESET} {(line.strip().split('||')[0]).split('-')[0]}")
 
-    
+    # ask the user which item they want to see from the history
     selectedItem = input(f"\n{Fore.LIGHTCYAN_EX}Select the number you want to see QR-Code again\nor press Enter to back to the main menue: {Fore.RESET}")
     
+    # check if the user just pressed enter key and want to get back to the main menue
     if selectedItem == "":
         controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
     else:
-        try:
+        try: # open the selected item image from the history
             with open("./history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
             os.system(f"xdg-open history/{requestedQRcodeFileName}")
             print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
             history()
-        except:
+        except: # warn the user that selected item is not valid
             print(f"\n{Fore.LIGHTRED_EX}--Wrong input!, please only enter the number from the range 1 to 10--{Fore.RESET}")
             history()
 
@@ -130,4 +132,4 @@ controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-C
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
 # TODO: maintain the installer
-# TODO: add error message in the scan section when user does not enter a valid location of the image to scan - DONE
+# TODO: add code comments to history section
