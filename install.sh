@@ -1,3 +1,7 @@
+echo "UPDATING REPOSITORIES..."
+apt update
+echo "UPDATING DONE!"
+
 echo "INSTALLING PIP3..."
 apt install python3-pip
 echo "INSTALLING PIP3... DONE!"
