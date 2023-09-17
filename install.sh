@@ -1,15 +1,15 @@
 echo "UPDATING REPOSITORIES..."
-apt update
+sudo apt update
 echo "UPDATING DONE!"
 
 echo "INSTALLING PIP3..."
-apt install python3-pip
+sudo apt install python3-pip
 echo "INSTALLING PIP3... DONE!"
 
 echo "MOVING THE THE FILES TO /usr/local/bin/QRious"
-mkdir /usr/local/bin/QRious
-cp * /usr/local/bin/QRious
-cd /usr/local/bin/QRious
+sudo mkdir /usr/local/bin/QRious
+sudo cp * /usr/local/bin/QRious
+sudo cd /usr/local/bin/QRious
 echo "MOVING... DONE!"
 
 echo "INSTALLING REQUIREMENTS..."
