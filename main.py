@@ -8,6 +8,7 @@ from PIL import Image # to open image files
 from pyzbar.pyzbar import decode # to decode and scan qr-codes
 import warnings
 import sys
+from colorama import Fore # to colorize the texts
 
 # Suppress standard warnings
 warnings.filterwarnings("ignore")
@@ -29,8 +30,8 @@ def controller(status):
         scan_QRcode()
     
     else:
-        print("\nWrong input, please try again!\nuse \'g\' to generate QR-Code, 's' to scan and \'h\' to see the history.\n")
-        controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
+        print(f"\n{Fore.LIGHTRED_EX}Wrong input, please try again!\nuse \'g\' to generate QR-Code, 's' to scan and \'h\' to see the history.{Fore.RESET}\n")
+        controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 
 def generate_QRcode():
@@ -49,7 +50,7 @@ def generate_QRcode():
             file.writelines(modifiedLines)
 
 
-    userInput = input("\nPlease Enter Your Text, The QR-code Will Be Generated:\n")
+    userInput = input(f"\n{Fore.LIGHTCYAN_EX}Please Enter Your Text, The QR-code Will Be Generated:{Fore.RESET}\n")
     qrcode = segno.make_qr(userInput) # make the qr-code using segno
 
     #removes the oldest qr-code in the history directory if there is more than 10 of them
@@ -79,7 +80,7 @@ def generate_QRcode():
 
 def scan_QRcode():
     checkIfHistoryDirExists()
-    imageLocation = input("\nEnter the QR-Code image location to scan: ")
+    imageLocation = input(f"\n{Fore.LIGHTCYAN_EX}Enter the QR-Code image location to scan: {Fore.RESET}")
 
     # Redirect standard output and error streams to hide unwanted messages
     sys.stdout = open ("/dev/null", "w")
@@ -97,27 +98,35 @@ def scan_QRcode():
 
 def history():
     checkIfHistoryDirExists()
-    print("\n<< History of the last 10 generated QR-Codes >>\n")
+    print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
 
     with open("./history/history.log") as file:
         counter = -1
         for line in file:
             counter += 1
-            print(f"{counter}. [{line.strip().split('||')[1]}] Generated in {(line.strip().split('||')[0]).split('-')[0]}")
+            print(f"{counter}. [{line.strip().split('||')[1]}] {Fore.LIGHTBLUE_EX}Generated in{Fore.RESET} {(line.strip().split('||')[0]).split('-')[0]}")
 
     
-    selectedItem = input("\nSelect the number you want to see QR-Code again\nor press Enter to back to the main menue: ")
+    selectedItem = input(f"\n{Fore.LIGHTCYAN_EX}Select the number you want to see QR-Code again\nor press Enter to back to the main menue: {Fore.RESET}")
     
     if selectedItem == "":
-        controller(input("\nWhat do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
+        controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
     else:
         try:
             with open("./history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
             os.system(f"xdg-open history/{requestedQRcodeFileName}")
         except:
-            print("\n--Wrong input!, please only enter the number from the range 1 to 10--")
+            print(f"\n{Fore.LIGHTRED_EX}--Wrong input!, please only enter the number from the range 1 to 10--{Fore.RESET}")
             history()
 
 
-controller(input("What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: "))
+controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
+
+
+# TODO: colorize some of the texts - DONE
+# TODO: impliment table to show the scanned qr-code more organized and beautiful
+# TODO: maintain the installer
+# TODO: add error message in the scan section when user does not enter a valid location of the image to scan
+# TODO: add 'oppening image...' after the user select an image from the history list to be opened.
+# TODO: ask the user if they want to view another item from the history after they already selected an item to be displayed form the history
