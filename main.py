@@ -116,6 +116,8 @@ def history():
             with open("./history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
             os.system(f"xdg-open history/{requestedQRcodeFileName}")
+            print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
+            history()
         except:
             print(f"\n{Fore.LIGHTRED_EX}--Wrong input!, please only enter the number from the range 1 to 10--{Fore.RESET}")
             history()
@@ -123,10 +125,8 @@ def history():
 
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
-
-# TODO: colorize some of the texts - DONE
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
 # TODO: maintain the installer
 # TODO: add error message in the scan section when user does not enter a valid location of the image to scan
-# TODO: add 'oppening image...' after the user select an image from the history list to be opened.
-# TODO: ask the user if they want to view another item from the history after they already selected an item to be displayed form the history
+# TODO: add 'oppening image...' after the user select an image from the history list to be opened. - DONE
+# TODO: ask the user if they want to view another item from the history after they already selected an item to be displayed form the history - DONE
