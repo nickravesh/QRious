@@ -7,9 +7,9 @@ sudo apt install python3-pip
 echo "INSTALLING PIP3... DONE!"
 
 echo "MOVING THE THE FILES TO /usr/local/bin/QRious"
-sudo mkdir /usr/local/bin/QRious
-sudo cp * /usr/local/bin/QRious
-sudo cd /usr/local/bin/QRious
+sudo mkdir ~/.local/bin/QRious
+sudo cp * ~/.local/bin/QRious
+sudo cd ~/.local/bin/QRious
 echo "MOVING... DONE!"
 
 echo "INSTALLING REQUIREMENTS..."
@@ -18,7 +18,8 @@ cd ~
 echo "INSTALLING REQUIREMENTS... DONE!"
 
 echo "ONE MOMENT... SETTING THINGS UP..."
-echo "alias qr='python3 /usr/local/bin/QRious/main.py'" >> ~/.bashrc
-echo "alias QRious='python3 /usr/local/bin/QRious/main.py'" >> ~/.bashrc
+echo "alias qr='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
+echo "alias QRious='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
+source ~/.bashrc
 echo "ALL DONE!"
 echo "Now just type 'QRious' or 'qr' to get started."
