@@ -131,5 +131,5 @@ def history():
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
-# TODO: maintain the installer
-# TODO: add code comments to history section
+# TODO: maintain the installer - DONE
+# TODO: add code comments to history section - DONE
