@@ -123,7 +123,7 @@ def history():
         try: # open the selected item image from the history
             with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
-            os.system(f"xdg-open history/{requestedQRcodeFileName}")
+            os.system(f"xdg-open {os.path.dirname(__file__)}/history/{requestedQRcodeFileName}")
             print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
             history()
         except: # warn the user that selected item is not valid
@@ -134,3 +134,4 @@ def history():
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
+# FIXME: when the user have not generated any qr-codes but navigates to the history section, it get error for the history.log file not being found.
