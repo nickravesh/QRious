@@ -77,7 +77,7 @@ def generate_QRcode():
     os.system(f'segno --compact "{userInput}"') # to show the qr-code in the terminal
 
     # log the value of the generated qr-code and its file name to the history.log file
-    with open("./history/history.log", "a") as fileHandel:
+    with open(f"{os.path.dirname(__file__)}/history/history.log", "a") as fileHandel:
         fileHandel.write(f"{filePathToSave.split('/')[-1]}||{userInput}\n")
 
 
@@ -107,7 +107,7 @@ def history():
     print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
 
     # open the history.log file, read and then display the log of the saved qr-codes in the history directory with their name and the date they have generated
-    with open("./history/history.log") as file:
+    with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
         counter = -1
         for line in file:
             counter += 1
@@ -134,5 +134,3 @@ def history():
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
-# TODO: maintain the installer - DONE
-# TODO: add code comments to history section - DONE
