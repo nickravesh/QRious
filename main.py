@@ -15,8 +15,11 @@ warnings.filterwarnings("ignore")
 
 
 def checkIfHistoryDirExists():
-    if "history" not in os.listdir():
-        os.mkdir("history")
+    # gets the path of the script directory and creates a history directory
+    currentScriptPath = os.path.dirname(__file__)
+
+    if "history" not in os.listdir(__file__):
+        os.mkdir(f"{currentScriptPath}/history")
 
 
 def controller(status):
@@ -64,7 +67,7 @@ def generate_QRcode():
         deleteLinesContainingSpecificString("./history/history.log", fileToDeletePath.split("/")[-1])
         print(fileToDeletePath.split("/")[-1])
 
-    # gets the path of the script directory and generates a colorful copy of qr-code inside of history directory
+    # gets the path of the script directory and generates a copy of qr-code inside of history directory
     filePathToSave = f"{os.path.dirname(__file__)}/history/{datetime.datetime.now().strftime('%Y_%m_%d')}-{datetime.datetime.now().strftime('%H%M%S')}.png"
     qrcode.save(filePathToSave, scale=20, dark="black", light="white")
 
