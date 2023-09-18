@@ -15,8 +15,11 @@ warnings.filterwarnings("ignore")
 
 
 def checkIfHistoryDirExists():
-    if "history" not in os.listdir():
-        os.mkdir("history")
+    # gets the path of the script directory and creates a history directory
+    currentScriptPath = os.path.dirname(__file__)
+
+    if "history" not in os.listdir(currentScriptPath):
+        os.mkdir(f"{currentScriptPath}/history")
 
 
 def controller(status):
@@ -61,10 +64,10 @@ def generate_QRcode():
         fileToDeletePath = f"{os.path.dirname(__file__)}/history/{min(listOfFiles, key=lambda x: os.path.getctime(os.path.join(f'{os.path.dirname(__file__)}/history/', x)))}"
         os.remove(fileToDeletePath)
 
-        deleteLinesContainingSpecificString("./history/history.log", fileToDeletePath.split("/")[-1])
+        deleteLinesContainingSpecificString(f"{os.path.dirname(__file__)}/history/history.log", fileToDeletePath.split("/")[-1])
         print(fileToDeletePath.split("/")[-1])
 
-    # gets the path of the script directory and generates a colorful copy of qr-code inside of history directory
+    # gets the path of the script directory and generates a copy of qr-code inside of history directory
     filePathToSave = f"{os.path.dirname(__file__)}/history/{datetime.datetime.now().strftime('%Y_%m_%d')}-{datetime.datetime.now().strftime('%H%M%S')}.png"
     qrcode.save(filePathToSave, scale=20, dark="black", light="white")
 
@@ -74,7 +77,7 @@ def generate_QRcode():
     os.system(f'segno --compact "{userInput}"') # to show the qr-code in the terminal
 
     # log the value of the generated qr-code and its file name to the history.log file
-    with open("./history/history.log", "a") as fileHandel:
+    with open(f"{os.path.dirname(__file__)}/history/history.log", "a") as fileHandel:
         fileHandel.write(f"{filePathToSave.split('/')[-1]}||{userInput}\n")
 
 
@@ -104,7 +107,7 @@ def history():
     print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
 
     # open the history.log file, read and then display the log of the saved qr-codes in the history directory with their name and the date they have generated
-    with open("./history/history.log") as file:
+    with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
         counter = -1
         for line in file:
             counter += 1
@@ -118,9 +121,9 @@ def history():
         controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
     else:
         try: # open the selected item image from the history
-            with open("./history/history.log") as file:
+            with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
-            os.system(f"xdg-open history/{requestedQRcodeFileName}")
+            os.system(f"xdg-open {os.path.dirname(__file__)}/history/{requestedQRcodeFileName}")
             print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
             history()
         except: # warn the user that selected item is not valid
@@ -131,5 +134,4 @@ def history():
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
-# TODO: maintain the installer - DONE
-# TODO: add code comments to history section - DONE
+# FIXME: when the user have not generated any qr-codes but navigates to the history section, it get error for the history.log file not being found.
