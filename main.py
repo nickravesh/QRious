@@ -64,7 +64,7 @@ def generate_QRcode():
         fileToDeletePath = f"{os.path.dirname(__file__)}/history/{min(listOfFiles, key=lambda x: os.path.getctime(os.path.join(f'{os.path.dirname(__file__)}/history/', x)))}"
         os.remove(fileToDeletePath)
 
-        deleteLinesContainingSpecificString("./history/history.log", fileToDeletePath.split("/")[-1])
+        deleteLinesContainingSpecificString(f"{os.path.dirname(__file__)}/history/history.log", fileToDeletePath.split("/")[-1])
         print(fileToDeletePath.split("/")[-1])
 
     # gets the path of the script directory and generates a copy of qr-code inside of history directory
@@ -121,7 +121,7 @@ def history():
         controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
     else:
         try: # open the selected item image from the history
-            with open("./history/history.log") as file:
+            with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
                 requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
             os.system(f"xdg-open history/{requestedQRcodeFileName}")
             print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
