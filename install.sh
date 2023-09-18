@@ -22,6 +22,8 @@ echo "MOVING... DONE!"
 echo "ONE MOMENT... SETTING THINGS UP..."
 echo "alias qr='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
 echo "alias QRious='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
-source ~/.bashrc
 echo "ALL DONE!"
 echo "Now just type 'QRious' or 'qr' to get started."
+
+cd $SCRIPT_DIR
+bash
