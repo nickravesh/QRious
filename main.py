@@ -18,7 +18,7 @@ def checkIfHistoryDirExists():
     # gets the path of the script directory and creates a history directory
     currentScriptPath = os.path.dirname(__file__)
 
-    if "history" not in os.listdir():
+    if "history" not in os.listdir(currentScriptPath):
         os.mkdir(f"{currentScriptPath}/history")
 
 
