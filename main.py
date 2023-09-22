@@ -107,7 +107,7 @@ def history():
     
     # check to see if the history.log file even exists
     if os.path.exists(f"{os.path.dirname(__file__)}/history/history.log") == False:
-        print(f"\n{Fore.RED}--No items/history to display here, because you haven't generated any QR-Codes yet--{Fore.RESET}\n")
+        print(f"\n{Fore.LIGHTRED_EX}--No items/history to display here, because you haven't generated any QR-Codes yet--{Fore.RESET}\n")
         controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
     else: # do the following when the history.log exists
