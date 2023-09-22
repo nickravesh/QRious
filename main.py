@@ -104,34 +104,40 @@ def scan_QRcode():
 
 def history():
     checkIfHistoryDirExists()
-    print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
-
-    # open the history.log file, read and then display the log of the saved qr-codes in the history directory with their name and the date they have generated
-    with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
-        counter = -1
-        for line in file:
-            counter += 1
-            print(f"{counter}. [{line.strip().split('||')[1]}] {Fore.LIGHTBLUE_EX}Generated in{Fore.RESET} {(line.strip().split('||')[0]).split('-')[0]}")
-
-    # ask the user which item they want to see from the history
-    selectedItem = input(f"\n{Fore.LIGHTCYAN_EX}Select the number you want to see QR-Code again\nor press Enter to back to the main menue: {Fore.RESET}")
     
-    # check if the user just pressed enter key and want to get back to the main menue
-    if selectedItem == "":
-        controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
-    else:
-        try: # open the selected item image from the history
-            with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
-                requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
-            os.system(f"xdg-open {os.path.dirname(__file__)}/history/{requestedQRcodeFileName}")
-            print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
-            history()
-        except: # warn the user that selected item is not valid
-            print(f"\n{Fore.LIGHTRED_EX}--Wrong input!, please only enter the number from the range 1 to 10--{Fore.RESET}")
-            history()
+    # check to see if the history.log file even exists
+    if os.path.exists(f"{os.path.dirname(__file__)}/history/history.log") == False:
+        print(f"\n{Fore.RED}--No items/history to display here, because you haven't generated any QR-Codes yet--{Fore.RESET}\n")
+        controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
+
+    else: # do the following when the history.log exists
+        print(f"\n{Fore.LIGHTMAGENTA_EX}<< History of the last 10 generated QR-Codes >>{Fore.RESET}\n")
+
+        # open the history.log file, read and then display the log of the saved qr-codes in the history directory with their name and the date they have generated
+        with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
+            counter = -1
+            for line in file:
+                counter += 1
+                print(f"{counter}. [{line.strip().split('||')[1]}] {Fore.LIGHTBLUE_EX}Generated in{Fore.RESET} {(line.strip().split('||')[0]).split('-')[0]}")
+
+        # ask the user which item they want to see from the history
+        selectedItem = input(f"\n{Fore.LIGHTCYAN_EX}Select the number you want to see QR-Code again\nor press Enter to back to the main menue: {Fore.RESET}")
+        
+        # check if the user just pressed enter key and want to get back to the main menue
+        if selectedItem == "":
+            controller(input(f"\n{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
+        else:
+            try: # open the selected item image from the history
+                with open(f"{os.path.dirname(__file__)}/history/history.log") as file:
+                    requestedQRcodeFileName = file.readlines()[int(selectedItem)].split('||')[0]
+                os.system(f"xdg-open {os.path.dirname(__file__)}/history/{requestedQRcodeFileName}")
+                print(f"{Fore.LIGHTGREEN_EX}Opening item from the history...{Fore.RESET}")
+                history()
+            except: # warn the user that selected item is not valid
+                print(f"\n{Fore.LIGHTRED_EX}--Wrong input!, please only enter the number from the range 1 to 10--{Fore.RESET}")
+                history()
 
 
 controller(input(f"{Fore.LIGHTYELLOW_EX}What do you want to do?\n(G)enerate QR-Code, (S)can a QR-Code or See the (H)istory: {Fore.RESET}"))
 
 # TODO: impliment table to show the scanned qr-code more organized and beautiful
-# FIXME: when the user have not generated any qr-codes but navigates to the history section, it get error for the history.log file not being found.
