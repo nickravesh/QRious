@@ -83,23 +83,27 @@ def generate_QRcode():
 
 def scan_QRcode():
     checkIfHistoryDirExists()
-    imageLocation = input(f"\n{Fore.LIGHTCYAN_EX}Enter the QR-Code image location to scan: {Fore.RESET}")
-    # check if the given path to the qr-code image is valid
-    if imageLocation == "" or os.path.exists(imageLocation) == False:
-        print(f"{Fore.LIGHTRED_EX}Wrong path to the image!\nplease provide the absolute path to the image you want to scan for QR-Code.{Fore.RESET}")
+    try:
+        imageLocation = input(f"\n{Fore.LIGHTCYAN_EX}Enter the QR-Code image location to scan: {Fore.RESET}")
+        # check if the given path to the qr-code image is valid
+        if imageLocation == "" or os.path.exists(imageLocation) == False:
+            print(f"{Fore.LIGHTRED_EX}Wrong path to the image!\nplease provide the absolute path to the image you want to scan for QR-Code.{Fore.RESET}")
+            scan_QRcode()
+        # Redirect standard output and error streams to hide unwanted messages
+        sys.stdout = open ("/dev/null", "w")
+        sys.stderr = open ("/dev/null", "w")
+
+        qrImage = Image.open(imageLocation)
+
+        # Restore standard output and error streams
+        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
+
+        decoded_list = decode(qrImage)
+        print(f"\n{decoded_list[0].data.decode()}")
+    except:
+        print(f"\n{Fore.LIGHTRED_EX}Failed to detect qr-code, you can try the following solutions:\n- crop the image to fit the qr-code better\n- make sure the qr-code is not damaged\n- use image with better quality")
         scan_QRcode()
-    # Redirect standard output and error streams to hide unwanted messages
-    sys.stdout = open ("/dev/null", "w")
-    sys.stderr = open ("/dev/null", "w")
-
-    qrImage = Image.open(imageLocation)
-
-    # Restore standard output and error streams
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
-
-    decoded_list = decode(qrImage)
-    print(f"\n{decoded_list[0].data.decode()}")
     
 
 def history():
