@@ -1,7 +1,7 @@
 # QRious
 Generate and scan QR-Codes offline.
 
-Experience precise and reliable local QR code image generation and scanning with automated history tracking.
+Reliable local QR code image generation and scanning with automated history tracking.
 
 ## One-Liner install for Debian-based distros
 ```
@@ -13,6 +13,7 @@ Navigate to QRious directory and run the following command
 ```
 pip install -r requirements.txt
 ```
+and then run the main.py file `python3 main.py`
 
 ### Usage
 After install, use the commands "QRious" or "qr" at any time to generate or scan QR-Codes.
