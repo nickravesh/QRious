@@ -20,8 +20,8 @@ cd ~/.local/bin/QRious
 echo "MOVING... DONE!"
 
 echo "ONE MOMENT... SETTING THINGS UP..."
-echo "alias qr='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
-echo "alias QRious='python3 ~/.local/bin/QRious/main.py'" >> ~/.bashrc
+echo "alias qr='python3 ~/.local/bin/QRious/QRious.py'" >> ~/.bashrc
+echo "alias QRious='python3 ~/.local/bin/QRious/QRious.py'" >> ~/.bashrc
 echo "ALL DONE!"
 echo "Now just type 'QRious' or 'qr' to get started."
 
